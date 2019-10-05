@@ -17,7 +17,7 @@ publish_dependencies_as_layer(){
 
 publish_function_code(){
 	echo "Deploying the code itself..."
-	zip -r code.zip . -x \*.git\*
+	zip -r code.zip . -x .git\*
 	aws lambda update-function-code --function-name "${LAMBDA_FUNCTION_NAME}" --zip-file fileb://code.zip
 }
 
