@@ -36,7 +36,7 @@ jobs:
         fetch-depth: 1
     - name: Deploying to AWS Lambda Step (entrypoint.sh)
       id: aws
-      uses: samsetegne/aws_lambda_python_action@0.0.5
+      uses: samsetegne/aws_lambda_python_action@0.0.6
       with:
         requirements: 'pymysql pandas cython'
       env:
