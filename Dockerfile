@@ -6,7 +6,7 @@ LABEL "com.github.actions.icon"="layers"
 LABEL "com.github.actions.color"="yellow"
 
 RUN apt-get update
-RUN apt-get install -y jq zip tree
+RUN apt-get install -y jq zip
 RUN pip install awscli
 
 COPY entrypoint.sh /entrypoint.sh
