@@ -17,10 +17,6 @@ publish_dependencies_as_layer(){
 
 publish_function_code(){
 	echo "Deploying the code itself..."
-	echo "Listing all files (ls -a)"
-	ls -a
-	echo "Running tree command"
-	tree /
 	zip -r code.zip . -x .git\*
 	aws lambda update-function-code --function-name "${LAMBDA_FUNCTION_NAME}" --zip-file fileb://code.zip
 }
