@@ -27,7 +27,8 @@ update_function_layers(){
 }
 
 deploy_lambda_function(){
-	install_zip_dependencies $1
+        requirements = "$*"
+	install_zip_dependencies $requirements
 	publish_dependencies_as_layer
 	publish_function_code
 	update_function_layers
