@@ -5,7 +5,7 @@ install_zip_dependencies(){
 	mkdir python
 	pip install pipenv
 	pipenv run pip install --target=python
-	zip -r dependencies.zip ./python
+	zip -q -r dependencies.zip ./python
 }
 
 publish_dependencies_as_layer(){
