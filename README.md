@@ -1,6 +1,6 @@
 # AWS Lambda Python Action
 
-This is a GitHub Action that can be used to automate the deployment of python functions to AWS Lambda. Using a provided space-delimited list of python dependencies, it installs them to a lambda layer and then binds that layer to the lambda function in AWS.
+This is a GitHub Action that can be used to automate the deployment of python functions to AWS Lambda. Using a ~~provided space-delimited list of python dependencies~~ Pipfile found in the root of the repository, it installs the dependencies to a lambda layer and then binds that layer to the lambda function in AWS.
 
 ## Usage
 
@@ -18,7 +18,7 @@ This is a GitHub Action that can be used to automate the deployment of python fu
 
 Here is an example workflow YAML file that you would have in your lambda function's repository in **.github/workflows/**:  
 ```yml
-name: On Push
+name: Push Detected
 on:
   push:
     branches:
@@ -36,9 +36,7 @@ jobs:
         fetch-depth: 1
     - name: Deploying to AWS Lambda Step (entrypoint.sh)
       id: aws
-      uses: samsetegne/aws_lambda_python_action@0.0.6
-      with:
-        requirements: 'pymysql pandas cython'
+      uses: samsetegne/aws_lambda_python_action@master
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_DEFAULT_OUTPUT: ${{ secrets.AWS_DEFAULT_OUTPUT }}
@@ -52,4 +50,4 @@ In the '**on:**' section, the trigger action is set to only when pushes are made
   * ### Step 1
     - Checkout your repo's code using the official checkout action from GitHub found in the repository **actions/checkout**
   * ### Step 2
-    - Deploy the lambda function to AWS using the action from this repo (**samsetegne/aws_lambda_python_action**) and include pymysql, pandas, and cython as requirements to be installed in the lambda layer created during the automated deployment.
+    - Deploy the lambda function to AWS using the action from this repo (**samsetegne/aws_lambda_python_action**). If a Pipfile is in the root of the repository, the requirements will be installed to the lambda layer and the lambda layer will be bound to the lambda function during deployment.
