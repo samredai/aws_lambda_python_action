@@ -4,7 +4,7 @@ install_zip_dependencies(){
 	echo "Installing and zipping dependencies..."
 	mkdir python
 	pip install pipenv
-	pipenv run pip install -r aws-wsgi --target=python
+	pipenv run pip install -r <(pipenv lock -r) --target=python
 	zip -q -r dependencies.zip ./python
 }
 
