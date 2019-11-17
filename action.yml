@@ -5,13 +5,6 @@ on:
     branches:
       - master
 
-inputs:
-  requirements:
-    description: Space delimited list of python packages to deploy with the function, i.e. 'pandas pytorch pytz'
-    required: false
-    default: 'pipdate'
 runs:
   using: 'docker'
   image: 'Dockerfile'
-  args:
-    - ${{ inputs.requirements }}
