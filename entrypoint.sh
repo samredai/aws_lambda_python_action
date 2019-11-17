@@ -3,7 +3,7 @@
 install_zip_dependencies(){
 	echo "Installing and zipping dependencies..."
 	mkdir python
-	pip install --target=python $1
+	pip install --target=python -r requirements.txt
 	zip -r dependencies.zip ./python
 }
 
@@ -27,11 +27,11 @@ update_function_layers(){
 }
 
 deploy_lambda_function(){
-	install_zip_dependencies $1
+	install_zip_dependencies
 	publish_dependencies_as_layer
 	publish_function_code
 	update_function_layers
 }
 
-deploy_lambda_function "$*"
+deploy_lambda_function
 echo "Done."
