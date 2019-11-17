@@ -4,7 +4,8 @@ install_zip_dependencies(){
 	echo "Installing and zipping dependencies..."
 	mkdir python
 	pip install pipenv
-	pipenv run pip install -r <(pipenv lock -r) --target=python
+	pipenv lock -r > requirements.txt
+	pipenv run pip install -r requirements.txt --target=python
 	zip -q -r dependencies.zip ./python
 }
 
