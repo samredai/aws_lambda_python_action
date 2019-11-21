@@ -1,39 +1,17 @@
 #!/bin/bash
 
-install_zip_dependencies(){
-	echo "Installing and zipping dependencies..."
-	mkdir python
-	pip install pipenv
-	pipenv lock -r > requirements.txt
-	pipenv run pip install -r requirements.txt --target=python
-	zip -q -r dependencies.zip ./python
-}
+mkdir python
 
-publish_dependencies_as_layer(){
-	echo "Publishing dependencies as a layer..."
-	local result=$(aws lambda publish-layer-version --layer-name "${LAMBDA_LAYER_ARN}" --zip-file fileb://dependencies.zip)
-	LAYER_VERSION=$(jq '.Version' <<< "$result")
-	rm -rf python
-	rm dependencies.zip
-}
+pip install pipenv
+pipenv lock -r > requirements.txt
+pipenv run pip install -r requirements.txt --target=python
 
-publish_function_code(){
-	echo "Deploying the code itself..."
-	zip -r code.zip . -x .git\*
-	aws lambda update-function-code --function-name "${LAMBDA_FUNCTION_NAME}" --zip-file fileb://code.zip
-}
+zip -q -r dependencies.zip ./python
 
-update_function_layers(){
-	echo "Using the layer in the function..."
-	aws lambda update-function-configuration --function-name "${LAMBDA_FUNCTION_NAME}" --layers "${LAMBDA_LAYER_ARN}:${LAYER_VERSION}"
-}
+local result=$(aws lambda publish-layer-version --layer-name "${LAMBDA_LAYER_ARN}" --zip-file fileb://dependencies.zip)
+LAYER_VERSION=$(jq '.Version' <<< "$result")
 
-deploy_lambda_function(){
-	install_zip_dependencies
-	publish_dependencies_as_layer
-	publish_function_code
-	update_function_layers
-}
+zip -r code.zip . -x .git\*
 
-deploy_lambda_function
-echo "Done."
+aws lambda update-function-code --function-name "${LAMBDA_FUNCTION_NAME}" --zip-file fileb://code.zip
+aws lambda update-function-configuration --function-name "${LAMBDA_FUNCTION_NAME}" --layers "${LAMBDA_LAYER_ARN}:${LAYER_VERSION}"
